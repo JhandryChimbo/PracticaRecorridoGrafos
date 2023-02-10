@@ -5,6 +5,8 @@
 package vistas.utilidades;
 
 import com.google.gson.Gson;
+import controlador.Listas.exception.ListaNullException;
+import controlador.Listas.exception.PosicionNoEncontradaExcepcion;
 import controlador.PropiedadControlador;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,6 +14,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.swing.JComboBox;
+import modelo.Propiedad;
 
 /**
  *
@@ -56,5 +60,13 @@ public class Utiles {
         parse = (gson.fromJson(json, Parse.class));
 
         return parse.getPc();
+    }
+
+    public static JComboBox cargarComboPropiedad(JComboBox cbx, PropiedadControlador pc) throws Exception {
+        cbx.removeAllItems();
+        for (int i = 0; i < pc.getPropiedades().getSize(); i++) {
+            cbx.addItem(pc.getPropiedades().obtener(i));
+        }
+        return cbx;
     }
 }

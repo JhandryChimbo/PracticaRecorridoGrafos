@@ -5,6 +5,7 @@
 package controlador;
 
 import controlador.Listas.ListaEnlazada;
+import controlador.grafo.GrafoNoDirigidoEtiquetado;
 import modelo.Propiedad;
 
 /**
@@ -13,7 +14,31 @@ import modelo.Propiedad;
  */
 public class PropiedadControlador {
 
+    private GrafoNoDirigidoEtiquetado<Propiedad> grafo;
+
     private ListaEnlazada<Propiedad> propiedades = new ListaEnlazada<>();
+
+    public void crearGrafo() {
+        grafo = new GrafoNoDirigidoEtiquetado<>(propiedades.getSize(), Propiedad.class);
+        try {
+            for (int i = 0; i < propiedades.getSize(); i++) {
+                grafo.etiquetarVertice((i + 1), propiedades.obtener(i));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public GrafoNoDirigidoEtiquetado<Propiedad> getGrafo() {
+        if (grafo == null) {
+            crearGrafo();
+        }
+        return grafo;
+    }
+
+    public void setGrafo(GrafoNoDirigidoEtiquetado<Propiedad> grafo) {
+        this.grafo = grafo;
+    }
 
     public ListaEnlazada<Propiedad> getPropiedades() {
         return propiedades;

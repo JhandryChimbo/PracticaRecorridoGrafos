@@ -17,18 +17,30 @@ import vistas.utilidades.Utiles;
  * @author LENOVO
  */
 public class FrmPrincipal extends javax.swing.JFrame {
-
+    
     private PropiedadControlador pc = new PropiedadControlador();
     private ModeloTablaPropiedad mtp = new ModeloTablaPropiedad();
+    private FrmConectar frmConectar;
+    
+    public PropiedadControlador getPc() {
+        return pc;
+    }
+    
+    public void setPc(PropiedadControlador pc) {
+        this.pc = pc;
+    }
 
     /**
      * Creates new form FrmPrincipal
      */
     public FrmPrincipal() {
         initComponents();
-        setLocationRelativeTo(this);
+        
+        cargarJson();
+        
+        setLocationRelativeTo(null);
     }
-
+    
     public void cargarTabla() {
         if (pc.getPropiedades().getCabecera() != null) {
             mtp.setPropiedades(pc);
@@ -36,24 +48,36 @@ public class FrmPrincipal extends javax.swing.JFrame {
             tblPropiedades.updateUI();
         }
     }
-
+    
     public void limpiar() {
         txtNombre.setText("");
         txtDescripcion.setText("");
         cargarTabla();
     }
-
+    
     public void registrarPropiedad() throws Exception {
         Propiedad p = new Propiedad();
         if (txtNombre.getText().isEmpty() || txtDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Rellene los campos", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             p.setId(pc.getPropiedades().getSize() + 1);
+            p.setTipo(txtTipo.getText());
             p.setNombre(txtNombre.getText());
             p.setDescripcion(txtDescripcion.getText());
             pc.getPropiedades().insertar(p);
-            limpiar();
             Utiles.guardarJson(pc);
+            limpiar();
+            
+        }
+    }
+    
+    public void cargarJson() {
+        try {
+            pc = Utiles.cargarJson();
+            if (pc.getPropiedades().getSize() != 0) {
+                cargarTabla();
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -74,12 +98,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
         btnRegistrar = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        txtDireccion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPropiedades = new javax.swing.JTable();
         btnSalir = new javax.swing.JButton();
         btnConectar = new javax.swing.JButton();
+        btnGrafo = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtTipo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -124,10 +149,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Direccion:");
-
         tblPropiedades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -159,14 +180,29 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnGrafo.setBackground(new java.awt.Color(0, 102, 204));
+        btnGrafo.setForeground(new java.awt.Color(255, 255, 255));
+        btnGrafo.setText("Generar Grafo");
+        btnGrafo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGrafoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Tipo:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnSalir))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -175,26 +211,32 @@ public class FrmPrincipal extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(27, 27, 27)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                                    .addComponent(txtNombre)
                                     .addComponent(txtDescripcion)
-                                    .addComponent(txtDireccion)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnSalir)))
+                                    .addComponent(txtTipo, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))))))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnConectar)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnGrafo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnConectar)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -202,17 +244,15 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
+                .addGap(18, 18, 18)
                 .addComponent(btnRegistrar)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnConectar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGrafo)
+                    .addComponent(btnConectar))
+                .addGap(30, 30, 30)
                 .addComponent(btnSalir)
                 .addContainerGap())
         );
@@ -236,9 +276,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
-        FrmConectar frmConectar = new FrmConectar(this, rootPaneCheckingEnabled);
+        frmConectar = new FrmConectar(this, true, pc);
         frmConectar.setVisible(true);
-
     }//GEN-LAST:event_btnConectarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -249,6 +288,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrafoActionPerformed
+        try {
+            new FrmGrafo(null, true, pc.getGrafo(), 1).setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGrafoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -287,18 +334,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectar;
+    private javax.swing.JButton btnGrafo;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPropiedades;
     private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }

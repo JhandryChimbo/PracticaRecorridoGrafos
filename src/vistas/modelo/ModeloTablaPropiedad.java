@@ -40,11 +40,11 @@ public class ModeloTablaPropiedad extends AbstractTableModel {
             case 0:
                 return "ID";
             case 1:
-                return "Nombre";
+                return "Tipo";
             case 2:
-                return "Descripcion";
+                return "Nombre";
             case 3:
-                return "Distancia";
+                return "Descripcion";
             default:
                 return null;
         }
@@ -63,11 +63,11 @@ public class ModeloTablaPropiedad extends AbstractTableModel {
             case 0:
                 return (p != null) ? p.getId() : "No registrado";
             case 1:
-                return (p != null) ? p.getNombre() : "No registrado";
+                return (p != null) ? p.getTipo(): "No registrado";
             case 2:
-                return (p != null) ? p.getDescripcion() : "No registrado";
+                return (p != null) ? p.getNombre(): "No registrado";
             case 3:
-                return (p != null) ? p.getDistancia() : "No registrado";
+                return (p != null) ? p.getDescripcion(): "No registrado";
 
             default:
                 return null;

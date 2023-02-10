@@ -42,7 +42,6 @@ public class FrmGrafo extends javax.swing.JDialog {
         super(parent, modal);
         this.grafo = grafo;
         initComponents();
-        System.out.println("ssss");
         cargarDatos(estado);
     }
 
@@ -91,7 +90,7 @@ public class FrmGrafo extends javax.swing.JDialog {
             }
 
         } catch (Exception e) {
-            System.out.println("aqui estoy");
+
         } finally {
             graph.getModel().endUpdate();
         }

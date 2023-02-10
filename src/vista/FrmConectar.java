@@ -4,11 +4,22 @@
  */
 package vista;
 
+import controlador.PropiedadControlador;
+import controlador.grafo.Grafo;
+import javax.swing.JOptionPane;
+import vistas.modelo.ModeloTablaConexion;
+import vistas.utilidades.Utiles;
+
 /**
  *
  * @author LENOVO
  */
 public class FrmConectar extends javax.swing.JDialog {
+    
+    private FrmPrincipal frmPrincipal = new FrmPrincipal();
+    private ModeloTablaConexion mtc = new ModeloTablaConexion();
+    private PropiedadControlador pc = new PropiedadControlador();
+    private Grafo grafo;
 
     /**
      * Creates new form FrmConectar
@@ -16,7 +27,52 @@ public class FrmConectar extends javax.swing.JDialog {
     public FrmConectar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(parent);
+    }
+    
+    public FrmConectar(java.awt.Frame parent, boolean modal, PropiedadControlador pc) {
+        super(parent, modal);
+        this.pc = pc;
+        this.grafo = pc.getGrafo();
+        initComponents();
+        
+        cargarCombos();
+        cargarTabla();
+        setLocationRelativeTo(null);
+    }
+    
+    public void cargarCombos() {
+        try {
+            Utiles.cargarComboPropiedad(cbxOrigen, pc);
+            Utiles.cargarComboPropiedad(cbxDestino, pc);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void cargarTabla() {
+        mtc.setGrafo(pc.getGrafo());
+        tblConexion.setModel(mtc);
+        mtc.fireTableStructureChanged();
+        tblConexion.updateUI();
+    }
+    
+    public void conectar() {
+        Integer origen = cbxOrigen.getSelectedIndex();
+        Integer destino = cbxDestino.getSelectedIndex();
+        if (origen == destino || txtDistancia.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, revise que los campos se \n" +"encuentre rellenados correctamente", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                pc.getGrafo().insertarArista(origen + 1, destino + 1, Double.valueOf(txtDistancia.getText()));
+                cargarTabla();
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
     }
 
     /**
@@ -35,10 +91,15 @@ public class FrmConectar extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         btnConectarPropiedad = new javax.swing.JButton();
         btnAtras = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        cbxDestino = new javax.swing.JComboBox<>();
+        cbxOrigen = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtDistancia = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblConexion = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -73,7 +134,7 @@ public class FrmConectar extends javax.swing.JDialog {
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Distancia:");
+        jLabel3.setText("Origen: ");
 
         btnConectarPropiedad.setBackground(new java.awt.Color(0, 102, 204));
         btnConectarPropiedad.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,59 +154,87 @@ public class FrmConectar extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Distancia: ");
+
+        tblConexion.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblConexion);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAtras)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnConectarPropiedad)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(87, 87, 87))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addGap(53, 53, 53)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbxOrigen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbxDestino, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDistancia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnConectarPropiedad))
+                            .addComponent(btnAtras))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(16, 16, 16)
                     .addComponent(jLabel3)
-                    .addContainerGap(346, Short.MAX_VALUE)))
+                    .addContainerGap(385, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addComponent(cbxOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnConectarPropiedad)
-                .addGap(31, 31, 31)
+                    .addComponent(cbxDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConectarPropiedad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(btnAtras)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(75, 75, 75)
                     .addComponent(jLabel3)
-                    .addContainerGap(140, Short.MAX_VALUE)))
+                    .addContainerGap(426, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,12 +245,14 @@ public class FrmConectar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConectarPropiedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarPropiedadActionPerformed
-
+        conectar();
+        cargarCombos();
+        txtDistancia.setText("");
 
     }//GEN-LAST:event_btnConectarPropiedadActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     /**
@@ -209,12 +300,16 @@ public class FrmConectar extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnConectarPropiedad;
+    private javax.swing.JComboBox<String> cbxDestino;
+    private javax.swing.JComboBox<String> cbxOrigen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblConexion;
+    private javax.swing.JTextField txtDistancia;
     // End of variables declaration//GEN-END:variables
 }

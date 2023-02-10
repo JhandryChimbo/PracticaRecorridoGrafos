@@ -11,9 +11,9 @@ package modelo;
 public class Propiedad {
 
     private Integer id;
+    private String tipo;
     private String nombre;
     private String descripcion;
-    private Double distancia;
 
     public Propiedad() {
 
@@ -25,6 +25,14 @@ public class Propiedad {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getNombre() {
@@ -43,17 +51,9 @@ public class Propiedad {
         this.descripcion = descripcion;
     }
 
-    public Double getDistancia() {
-        return distancia;
-    }
-
-    public void setDistancia(Double distancia) {
-        this.distancia = distancia;
-    }
-
     @Override
     public String toString() {
-        return nombre + " - " + descripcion;
+        return "(" + id + ") " + nombre;
     }
 
 }
