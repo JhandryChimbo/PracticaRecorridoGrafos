@@ -120,12 +120,14 @@ public abstract class Grafo {
     //METODO DE FLOYD
     public void algoritmoFloyd() throws Exception {
 
+        ListaEnlazada ListaFloyd = new ListaEnlazada();
+
         Integer vertices = this.numVertices();
         Integer camino[][] = new Integer[vertices][vertices];
         Double caminoAux[][] = new Double[vertices][vertices];
         Double pesos[][] = pesoGrafo(this);
 
-        //Inicializando las matrices caminos y caminosAuxiliares
+        //Inicializando peso, camino y caminosAux
         for (int i = 0; i < vertices; i++) {
             for (int j = 0; j < vertices; j++) {
                 caminoAux[i][j] = pesos[i][j];
@@ -141,7 +143,7 @@ public abstract class Grafo {
             for (int i = 0; i < vertices; i++) {
                 for (int j = 0; j < vertices; j++) {
                     if ((caminoAux[i][k] + caminoAux[k][j]) < caminoAux[i][j]) {
-                        caminoAux[i][j] = caminoAux[j][k] + caminoAux[k][j];
+                        caminoAux[i][j] = caminoAux[i][k] + caminoAux[k][j];
                         camino[i][j] = k;
                     }
                 }
@@ -170,28 +172,97 @@ public abstract class Grafo {
         return adyacencia;
     }
 
-    public static void main(String[] args) {
-        GrafoNoDirigidoEtiquetado gde = new GrafoNoDirigidoEtiquetado(5, String.class);
-        gde.etiquetarVertice(1, "Mayuri");//
-        gde.etiquetarVertice(2, "Alice");
-        gde.etiquetarVertice(3, "Vanessa");
-        gde.etiquetarVertice(4, "Letty");//
-        gde.etiquetarVertice(5, "Cobos");
-        try {
-            gde.insertarAristaE(gde.obtenerEtiqueta(5), gde.obtenerEtiqueta(2), 10.0);
-            gde.insertarAristaE(gde.obtenerEtiqueta(1), gde.obtenerEtiqueta(2), 25.0);
-            gde.insertarAristaE(gde.obtenerEtiqueta(3), gde.obtenerEtiqueta(5), 1.0);
-            gde.insertarAristaE(gde.obtenerEtiqueta(3), gde.obtenerEtiqueta(4), -10.0);
-            gde.insertarAristaE(gde.obtenerEtiqueta(2), gde.obtenerEtiqueta(3), 55.0);
-            gde.insertarAristaE(gde.obtenerEtiqueta(1), gde.obtenerEtiqueta(4), 1000.0);
-            //System.out.println(gde.caminiMinimo(1, 4));
-//            gde.caminoMinimo(1, 2).imprimir();
-            gde.algoritmoFloyd();
-            //System.out.println(gde.toString());
-            new FrmGrafo(null, true, gde, 1).setVisible(true);
-            //new UbicacionController().listar().imprimir();
-        } catch (Exception e) {
+    //METODO DIJKSTRA
+    public ListaEnlazada algoritmoDijkstra(Integer origen) throws Exception {
+
+        ListaEnlazada caminoDijkstra = new ListaEnlazada();
+
+        origen -= 1;
+        Integer s = origen;
+        Integer vertices = this.numVertices();
+        Integer ultimo[] = new Integer[vertices];//ultmo vertice antes de llegar al destino
+
+        Boolean visitados[] = new Boolean[vertices];// vertices visitados
+
+        Double minimos[] = new Double[vertices];
+        Double pesos[][] = pesoGrafo(this);
+
+        visitados[s] = true;
+        minimos[s] = 0.0;
+
+        for (int i = 0; i < vertices; i++) {
+            if (i == origen) {
+                visitados[i] = false;
+                minimos[i] = pesos[s][i];
+                ultimo[i] = s;
+            }
+
         }
+
+        for (int i = 0; i < vertices; i++) {
+            Integer v = minimo(vertices, visitados, minimos);
+            visitados[v] = true;
+
+            for (int w = 0; w < vertices; w++) {
+                if (!visitados[w] && ((minimos[v] + pesos[v][w]) < minimos[w])) {
+                    minimos[w] = minimos[v] + pesos[v][w];
+                    ultimo[w] = v;
+                }
+            }
+            caminoDijkstra.insertar(minimos[i]);
+        }
+        return caminoDijkstra;
     }
+        public ListaEnlazada Dijkstra(Integer origen) throws Exception {
+        
+        origen = origen -1;
+        ListaEnlazada caminoDijkstra = new ListaEnlazada();
+        Integer Origen = origen;
+        Integer NumeroDeVertices = this.numVertices();
+        
+        Double[] AuxiliarDouble = new Double[NumeroDeVertices];
+        Boolean[] Marca = new Boolean[NumeroDeVertices];
+        Integer[] Ultimo = new Integer[NumeroDeVertices];
+        Double[][] MatrizPesos = pesoGrafo(this);
+        
+        Marca[Origen] = true;
+        AuxiliarDouble[Origen] = 0.0;
+
+        for (int i = 0; i < NumeroDeVertices; i++) {
+            Marca[i] = false;
+            AuxiliarDouble[i] = MatrizPesos[Origen][i];
+            Ultimo[i] = Origen;
+        }
+
+        for (int i = 0; i < NumeroDeVertices; i++) {
+            Integer v = minimo(NumeroDeVertices, Marca, AuxiliarDouble);
+            Marca[v] = true;
+            
+            for (int w = 0; w < NumeroDeVertices; w++) {
+                if (!Marca[w] && ((AuxiliarDouble[v] + MatrizPesos[v][w]) < AuxiliarDouble[w])) {
+                    AuxiliarDouble[w] = AuxiliarDouble[v] + MatrizPesos[v][w];
+                    Ultimo[w] = v;
+                }
+            }
+            caminoDijkstra.insertar(AuxiliarDouble[i]);
+        }
+        return caminoDijkstra;
+    }
+
+    private Integer minimo(Integer n, Boolean[] F, Double[] D) {
+
+        Double maximo = Infinito;
+        Integer v = 1;
+
+        for (int j = 0; j < n; j++) {
+            if (!F[j] && (D[j] < maximo)) {
+                maximo = D[j];
+                v = j;
+            }
+        }
+        return v;
+    }
+
+    
 
 }
