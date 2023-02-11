@@ -7,6 +7,7 @@ package practicarecorridografos;
 import controlador.Listas.ListaEnlazada;
 import controlador.grafo.GrafoNoDirigidoEtiquetado;
 import vista.FrmGrafo;
+import vista.FrmPrincipal;
 
 /**
  *
@@ -36,11 +37,14 @@ public class Main {
             gde.insertarAristaE(gde.obtenerEtiqueta(3), gde.obtenerEtiqueta(2), 9.0);
 //            gde.algoritmoFloyd();
             Integer nodo = 4;
-            gde.Dijkstra(nodo).imprimir();
+            gde.algoritmoDijkstra(nodo).imprimir();
             
             new FrmGrafo(null, true, gde, 1).setVisible(true);
         } catch (Exception e) {
         }
+        
+        FrmPrincipal frmPrincipal = new FrmPrincipal();
+        frmPrincipal.setVisible(true);
     }
 
 }

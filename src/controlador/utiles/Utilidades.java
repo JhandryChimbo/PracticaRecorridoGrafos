@@ -5,6 +5,8 @@
  */
 package controlador.utiles;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.lang.reflect.Field;
 
 /**
@@ -48,6 +50,20 @@ public class Utilidades {
         }
         return transformar;
     }
+
+    public static void guardarArchivo(String datos, String ubicacion) throws Exception {
+        FileWriter file = new FileWriter(ubicacion);
+        file.append(datos);
+        file.flush();
+        file.close();
+    }
+
+    public static void cargarArchivo(String datos, String ubicacion) throws Exception {
+        FileReader file = new FileReader(ubicacion);
+        
+    }
+
+    
 
     public static Boolean isNumber(Class clase) {
         return clase.getSuperclass().getSimpleName().equalsIgnoreCase("Number");

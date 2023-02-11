@@ -53,7 +53,7 @@ public class Propiedad {
 
     @Override
     public String toString() {
-        return "(" + id + ") " + nombre;
+        return tipo + ": " + nombre;
     }
 
 }

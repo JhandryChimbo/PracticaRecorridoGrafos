@@ -6,6 +6,8 @@ package vista;
 
 import controlador.PropiedadControlador;
 import controlador.grafo.Grafo;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vistas.modelo.ModeloTablaConexion;
 import vistas.utilidades.Utiles;
@@ -15,7 +17,7 @@ import vistas.utilidades.Utiles;
  * @author LENOVO
  */
 public class FrmConectar extends javax.swing.JDialog {
-    
+
     private FrmPrincipal frmPrincipal = new FrmPrincipal();
     private ModeloTablaConexion mtc = new ModeloTablaConexion();
     private PropiedadControlador pc = new PropiedadControlador();
@@ -28,51 +30,51 @@ public class FrmConectar extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
+
     public FrmConectar(java.awt.Frame parent, boolean modal, PropiedadControlador pc) {
         super(parent, modal);
         this.pc = pc;
         this.grafo = pc.getGrafo();
         initComponents();
-        
+
         cargarCombos();
         cargarTabla();
         setLocationRelativeTo(null);
     }
-    
+
     public void cargarCombos() {
         try {
             Utiles.cargarComboPropiedad(cbxOrigen, pc);
             Utiles.cargarComboPropiedad(cbxDestino, pc);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void cargarTabla() {
         mtc.setGrafo(pc.getGrafo());
         tblConexion.setModel(mtc);
-        mtc.fireTableStructureChanged();
         tblConexion.updateUI();
     }
-    
+
     public void conectar() {
         Integer origen = cbxOrigen.getSelectedIndex();
         Integer destino = cbxDestino.getSelectedIndex();
         if (origen == destino || txtDistancia.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, revise que los campos se \n" +"encuentre rellenados correctamente", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Por favor, revise que los campos se \n" + "encuentre rellenados correctamente", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
                 pc.getGrafo().insertarArista(origen + 1, destino + 1, Double.valueOf(txtDistancia.getText()));
                 cargarTabla();
+                pc.guardarGrafo();
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
     }
 
     /**
@@ -253,6 +255,11 @@ public class FrmConectar extends javax.swing.JDialog {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         this.dispose();
+        try {
+            frmPrincipal.algoritmoFloyd();
+        } catch (Exception ex) {
+            Logger.getLogger(FrmConectar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     /**

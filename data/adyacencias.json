@@ -1,0 +1,229 @@
+{
+    "cabecera": {
+        "dato": {
+            "1": {
+                "clase": "class modelo.Propiedad",
+                "id_clase": 1,
+                "listaAdycencias": {
+                    "cabecera": {
+                        "dato": {
+                            "destino": 2,
+                            "peso": 2.0
+                        },
+                        "siguiente": {
+                            "dato": {
+                                "destino": 3,
+                                "peso": 3.0
+                            },
+                            "siguiente": {
+                                "dato": {
+                                    "destino": 4,
+                                    "peso": 4.0
+                                },
+                                "siguiente": {
+                                    "dato": {
+                                        "destino": 5,
+                                        "peso": 5.0
+                                    },
+                                    "siguiente": {
+                                        "dato": {
+                                            "destino": 6,
+                                            "peso": 6.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            },
+            "2": {
+                "clase": "class modelo.Propiedad",
+                "id_clase": 2,
+                "listaAdycencias": {
+                    "cabecera": {
+                        "dato": {
+                            "destino": 1,
+                            "peso": 2.0
+                        },
+                        "siguiente": {
+                            "dato": {
+                                "destino": 3,
+                                "peso": 3.0
+                            },
+                            "siguiente": {
+                                "dato": {
+                                    "destino": 4,
+                                    "peso": 4.0
+                                },
+                                "siguiente": {
+                                    "dato": {
+                                        "destino": 5,
+                                        "peso": 2.0
+                                    },
+                                    "siguiente": {
+                                        "dato": {
+                                            "destino": 6,
+                                            "peso": 4.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            },
+            "3": {
+                "clase": "class modelo.Propiedad",
+                "id_clase": 3,
+                "listaAdycencias": {
+                    "cabecera": {
+                        "dato": {
+                            "destino": 1,
+                            "peso": 3.0
+                        },
+                        "siguiente": {
+                            "dato": {
+                                "destino": 2,
+                                "peso": 3.0
+                            },
+                            "siguiente": {
+                                "dato": {
+                                    "destino": 4,
+                                    "peso": 3.0
+                                },
+                                "siguiente": {
+                                    "dato": {
+                                        "destino": 5,
+                                        "peso": 4.0
+                                    },
+                                    "siguiente": {
+                                        "dato": {
+                                            "destino": 6,
+                                            "peso": 5.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            },
+            "4": {
+                "clase": "class modelo.Propiedad",
+                "id_clase": 4,
+                "listaAdycencias": {
+                    "cabecera": {
+                        "dato": {
+                            "destino": 1,
+                            "peso": 4.0
+                        },
+                        "siguiente": {
+                            "dato": {
+                                "destino": 2,
+                                "peso": 4.0
+                            },
+                            "siguiente": {
+                                "dato": {
+                                    "destino": 6,
+                                    "peso": 5.0
+                                },
+                                "siguiente": {
+                                    "dato": {
+                                        "destino": 5,
+                                        "peso": 5.0
+                                    },
+                                    "siguiente": {
+                                        "dato": {
+                                            "destino": 3,
+                                            "peso": 3.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            },
+            "5": {
+                "clase": "class modelo.Propiedad",
+                "id_clase": 5,
+                "listaAdycencias": {
+                    "cabecera": {
+                        "dato": {
+                            "destino": 1,
+                            "peso": 5.0
+                        },
+                        "siguiente": {
+                            "dato": {
+                                "destino": 6,
+                                "peso": 6.0
+                            },
+                            "siguiente": {
+                                "dato": {
+                                    "destino": 2,
+                                    "peso": 2.0
+                                },
+                                "siguiente": {
+                                    "dato": {
+                                        "destino": 4,
+                                        "peso": 5.0
+                                    },
+                                    "siguiente": {
+                                        "dato": {
+                                            "destino": 3,
+                                            "peso": 4.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            },
+            "6": {
+                "clase": "class modelo.Propiedad",
+                "id_clase": 6,
+                "listaAdycencias": {
+                    "cabecera": {
+                        "dato": {
+                            "destino": 1,
+                            "peso": 6.0
+                        },
+                        "siguiente": {
+                            "dato": {
+                                "destino": 4,
+                                "peso": 5.0
+                            },
+                            "siguiente": {
+                                "dato": {
+                                    "destino": 5,
+                                    "peso": 6.0
+                                },
+                                "siguiente": {
+                                    "dato": {
+                                        "destino": 2,
+                                        "peso": 4.0
+                                    },
+                                    "siguiente": {
+                                        "dato": {
+                                            "destino": 3,
+                                            "peso": 5.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 5
+                }
+            }
+        }
+    },
+    "size": 1
+}
